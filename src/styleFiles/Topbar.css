@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap");
 .container {
   position: relative;
 }
 .topbar {
   height: 11vh;
-  background-color: #e2e2e2;
+  background-color: #250656;
 
   display: flex;
   justify-content: space-between;
@@ -12,75 +12,52 @@
 
 #logo {
   align-self: center;
-  height: 7vh;
-  width: 7vh;
+  height: 8vh;
+  /* background: white; */
+  margin-top: 1vw;
   margin-left: 3vw;
 }
 
 #optionContainer {
   margin: auto 0;
-
+  /* background: grey; */
   float: right;
 }
-.topbarOption {
-  background: #e2e2e2;
-  outline: none;
-  margin-right: 3vw;
-  font-size: 20px;
+#betaTag {
+  position: relative;
+  background: white;
+  border-radius: 8px;
   border: none;
-  color: grey;
+  font-family: "Roboto";
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 5px;
+  margin-left: 7px;
+  bottom:2px;
+}
+.topbarOption {
+  background: #250656;
+  outline: none;
+  margin-right: 2.7vw;
+  font-size: 1.4rem;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  font-weight: 600;
+  padding-bottom: 7px;
+  border-bottom: 2px none solid;
+  font-weight: 500;
+  border-bottom: 1.5px rgba(255, 255, 255, 0) solid;
 }
-.topbarOption:hover {
-  color: black;
-}
-
-.start {
-  color: black;
-  border: white 1px solid;
-  padding: 0.2rem 0.5rem;
-  border-radius: 1.5rem;
-  /* box-shadow: grey 2px 2px 5px; */
-}
-.start:hover {
-  background-color: white;
-  box-shadow: 1px 1px 5px rgba(128, 128, 128, 0.5);
-}
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /* background-color: #4f93b8; */
-  background-color: #e2e2e2;
-}
-.about-body {
-  display: flex;
-  height: 50vh;
-  justify-content: space-between;
+.active {
+  border-bottom: 1px white solid;
 }
 
-.text-sec {
-  /* background-color: violet; */
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-  /* text-align: center; */
+.login {
+  height: 10in;
+  margin-right: 3rem;
+  overflow: visible !important;
 }
-.heading1 {
-  margin: 15vh 20vh 0 15vh;
-  font-size: 5rem;
-  font-family: "B612";
-}
-#heading1-txt {
-  margin-left: 17vh;
-  width: 23rem;
-}
-.ill {
-  height: 28rem;
-  margin-right: 15vh;
-}
-.white-wave {
-  margin-top: auto;
-  bottom: 0;
+.login:hover {
+  cursor: pointer;
+  /* box-shadow: 1px 1px 5px rgba(128, 128, 128, 0.5); */
 }
