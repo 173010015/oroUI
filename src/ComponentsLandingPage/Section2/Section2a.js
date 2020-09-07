@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: 50,
     justifyContent: "center",
-    
+
     //paddingLeft: theme.spacing(8),
     backgroundColor: theme.palette.background.default,
   },

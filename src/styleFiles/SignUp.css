@@ -1,0 +1,30 @@
+.signUpPageContainer {
+  display: flex;
+  flex-direction: row;
+}
+.Box {
+  width: 50%;
+  height: 100vh;
+}
+.leftBox {
+  height: 100vh;
+  background-image: linear-gradient(150deg, #146acd, #b20cee, #a609e0);
+}
+.wave-sign-up{
+  overflow: scroll;
+}
+.formBox {
+  /* -- to center the box -- */
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  /* ---- */
+  margin: 3rem;
+
+  border: 1px black solid;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
