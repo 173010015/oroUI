@@ -9,18 +9,20 @@ function Footer() {
   return (
     <div>
       <footer className="Footer">
-        <div className="Footer-box">
-          <div className="fItem">Contact Us</div>
+        <div className="Footer-border">
+          <div className="fBox">
+            <div className="fItem">Contact Us</div>
 
-          <div className="fItem">FAQ</div>
-          <div className="fItem">Reviews</div>
-          <div className="fItem">Blog</div>
-          <Link to="/terms-of-use" className="fItem">
-            Legal
-          </Link>
-          <Link to="/privacy-policy" className="fItem fItem-end">
-            Privacy Policy
-          </Link>
+            <div className="fItem">FAQ</div>
+            <div className="fItem">Reviews</div>
+            <div className="fItem">Blog</div>
+            <Link to="/terms-of-use" className="fItem">
+              Legal
+            </Link>
+            <Link to="/privacy-policy" className="fItem fItem-end">
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
