@@ -57,7 +57,7 @@ function SignUpForm() {
             name="firstName"
             label="First Name"
             onChange={handleChange}
-            validation={"required|min:6|max:12"}
+            validation={"required|max:12"}
           ></InputField>
           <InputField
             className="inputField"
@@ -66,7 +66,7 @@ function SignUpForm() {
             name="lastName"
             label="Last Name"
             onChange={handleChange}
-            validation={"required|min:6|max:12"}
+            validation={"required|max:12"}
           />
         </div>
         <InputField
@@ -87,8 +87,8 @@ function SignUpForm() {
         />{" "}
         <InputField
           ref={inputRefs.current[4]}
-          type="date"
           name="date"
+          placeholder="2001-07-25"
           label="Date of Birth"
           validation={"required"}
           onChange={handleChange}

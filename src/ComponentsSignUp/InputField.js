@@ -50,8 +50,10 @@ const InputField = forwardRef((props, ref) => {
       }
     }
 
-    if (props.type == "date") {
-      var pattern = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
+    if (props.name == "date") {
+      var pattern = new RegExp(
+        /((1[9][3-9][0-9])|(2[0][0][0-2]))-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/
+      );
       if (!pattern.test(value)) {
         setError("Please enter valid DOB.");
         return false;
@@ -60,7 +62,17 @@ const InputField = forwardRef((props, ref) => {
         return false;
       } else return true;
     }
-
+    if (props.name == "password") {
+      var pattern = new RegExp(
+        /^^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/
+      );
+      if (!pattern.test(value)) {
+        setError(
+          "Password must contain an uppercase letter, lower case letter, number and a special character. "
+        );
+        return false;
+      }
+    }
     if (props.name == "email") {
       if (typeof value !== "undefined") {
         var pattern = new RegExp(
