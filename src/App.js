@@ -11,6 +11,7 @@ import LandingPage from "./Pages/LandingPage";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import TermsOfUse from "./Pages/TermsOfUse";
 import SignUp from "./Pages/SignUp";
+import SignIn from "./Pages/SignIn";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/terms-of-use" component={TermsOfUse} />
         <Route exact path="/sign-up" component={SignUp} />
+        <Route exact path="/sign-in" component={SignIn} />
       </Switch>
     </Router>
   );

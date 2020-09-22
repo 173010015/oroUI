@@ -54,6 +54,7 @@ const InputField = forwardRef((props, ref) => {
       var pattern = new RegExp(
         /((1[9][3-9][0-9])|(2[0][0][0-2]))-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])/
       );
+      console.log(value);
       if (!pattern.test(value)) {
         setError("Please enter valid DOB.");
         return false;
@@ -64,7 +65,7 @@ const InputField = forwardRef((props, ref) => {
     }
     if (props.name == "password") {
       var pattern = new RegExp(
-        /^^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/
+        /^^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]/
       );
       if (!pattern.test(value)) {
         setError(

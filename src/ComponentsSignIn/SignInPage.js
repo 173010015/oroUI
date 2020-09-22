@@ -1,13 +1,16 @@
 import React from "react";
 import logo from "../ComponentsLandingPage/images/orologonew11.ico";
-import SignUpForm from "./SignUpForm";
+import SignInForm from "./SignInForm";
 
-function SignUpPage() {
+function SignInPage() {
   return (
     <div>
-      <div className="signUpPageContainer">
+      <div className="signInPageContainer">
+        <div className="Box">
+          
+        </div>
         <div className="leftBox Box">
-          <img className="signUpLogo" src={logo} style={{ height: "4rem" }} />
+          <img className="signInLogo" src={logo} style={{ height: "4rem" }} />
           <svg data-name="Layer 1" viewBox="80 50 400 800" className="test">
             <defs>
               <linearGradient id="wave1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -30,21 +33,18 @@ function SignUpPage() {
               fill="url(#wave1)"
             ></path>
           </svg>
-          <h2 className="signUpheading">Welcome to</h2>
-          <h1 className="signUpheading2">OnRoadOut</h1>
-          <p className="signUpheading3">
+          <h2 className="signInheading">Welcome to</h2>
+          <h1 className="signInheading2">OnRoadOut</h1>
+          <p className="signInheading3">
             Mauris porttitor ex sit amet nulla vulputate dapibus
           </p>
           <div id="circle1"></div>
           <div id="circle2"></div>
           <div id="circle3"></div>
         </div>
-        <div className="Box">
-          <SignUpForm></SignUpForm>
-        </div>
       </div>
     </div>
   );
 }
 
-export default SignUpPage;
+export default SignInPage;
