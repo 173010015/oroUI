@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 const schema = {
-  phoneNo: {
+  phone: {
     presence: { allowEmpty: false, message: 'is required' },
     format:{
       pattern: "[0-9]+",
@@ -172,7 +172,7 @@ const SignIn = props => {
   };
 
   const handleSignIn = event => {
-    let apiUrl = "https://5a53dcd8-644c-4685-8a3b-042e79d63166.mock.pstmn.io/login";
+    let apiUrl = "https://oro-api-qa.herokuapp.com/login";
     let headers =new Headers();
     headers.set('Content-Type','application/json');
     fetch(apiUrl,{
@@ -188,7 +188,8 @@ const SignIn = props => {
           }
     })
     .then(data=>{
-      if(data.status === "OK"){
+      if(data.success === true){
+        console.log(data);
         localStorage.setItem('isAuthenticated',true);
         history.push('/dashboard');
         console.log("how");
@@ -199,6 +200,7 @@ const SignIn = props => {
           isValidLogin: false
         }));
         console.log("Jow");
+        console.log(data);
       }
     })
     event.preventDefault();
@@ -297,16 +299,16 @@ const SignIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('phoneNo')}
+                  error={hasError('phone')}
                   fullWidth
                   helperText={
-                    hasError('phoneNo') ? formState.errors.phoneNo[0] : null
+                    hasError('phone') ? formState.errors.phone[0] : null
                   }
                   label="Phone Number"
-                  name="phoneNo"
+                  name="phone"
                   onChange={handleChange}
                   type="tel"
-                  value={formState.values.phoneNo || ''}
+                  value={formState.values.phone || ''}
                   variant="outlined"
                 />
                 <TextField

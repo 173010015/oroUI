@@ -1,195 +1,343 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import parse from 'autosuggest-highlight/parse';
-import throttle from 'lodash/throttle';
-import Alert from '@material-ui/lab/Alert';
+import React, { useState } from 'react';
+import clsx from 'clsx';
+import 'date-fns';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/styles';
+import  { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Divider,
+  Grid,
+  Button,
+  TextField
+} from '@material-ui/core';
+import axios from 'axios';
+import Moment from 'moment';
 
-function loadScript(src, position, id) {
-  if (!position) {
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
-  script.src = src;
-  position.appendChild(script);
-}
-
-const autocompleteService = { current: null };
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing(2),
-  },
-  formHeading: {
-        marginBottom: theme.spacing(3),
-        marginLeft: theme.spacing(7),
-        marginTop: theme.spacing(5)
-    },
-    /* blockquote: {
-        marginBottom: theme.spacing(3),
-        marginLeft: theme.spacing(0),
-        marginTop: theme.spacing(3),
-        marginRight: theme.spacing(0),
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        paddingLeft: theme.spacing(3),
-        paddingRight: theme.spacing(3),
-        borderLeft: theme.spacing(2),
-        borderLeftStyle : 'solid',
-        borderLeftColor : '#ffe564'
-      //  backgroundColor: rgba(255,229,100,0.2)
-    },
-    */
-   blockquote:{
-     margin: '24px',
-     padding: '4px 24px',
-     borderLeft: '5px solid #ffe564',
-     backgroundColor: 'rgba(255,229,100,0.2)'
-   },
+const useStyles = makeStyles(theme => ({
   root: {
-      marginLeft : '56px',
-    '& .MuiTextField-root': {
-      margin: theme.spacing(5),
-      width: '25ch',
-    },
-   '& .MuiTypography-gutterBottom': {
-        marginBottom: theme.spacing(3),
-        marginLeft: theme.spacing(7),
-        marginTop: theme.spacing(10)
-    }
-  },
+    padding: theme.spacing(4)
+  }
 }));
 
-export default function GoogleMaps() {
+const LoadForm = props => {
+  const { className, ...rest } = props;
+
   const classes = useStyles();
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
-  const [options, setOptions] = React.useState([]);
-  const loaded = React.useRef(false);
 
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
-      loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyBwRp1e12ec1vOTtGiA4fcCt2sCUS78UYc&libraries=places',
-        document.querySelector('head'),
-        'google-maps',
-      );
-    }
+  const [values, setValues] = useState({
+    start_location: '',
+    drop_location: '',
+    shipment_type: '',
+    shipment_weight: '',
+    shipment_date: Moment().format(),
+    vehicle_required_type: '',
+    wheelsNo: '0',
+    companyName: ''
+  });
 
-    loaded.current = true;
-  }
-
-  const fetch = React.useMemo(
-    () =>
-      throttle((request, callback) => {
-        autocompleteService.current.getPlacePredictions(request, callback);
-      }, 200),
-    [],
-  );
-
-  React.useEffect(() => {
-    let active = true;
-
-    if (!autocompleteService.current && window.google) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-    }
-    if (!autocompleteService.current) {
-      return undefined;
-    }
-
-    if (inputValue === '') {
-      setOptions(value ? [value] : []);
-      return undefined;
-    }
-
-    fetch({ input: inputValue }, (results) => {
-      if (active) {
-        let newOptions = [];
-
-        if (value) {
-          newOptions = [value];
-        }
-
-        if (results) {
-          newOptions = [...newOptions, ...results];
-        }
-
-        setOptions(newOptions);
-      }
+  const handleChange = event => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
     });
+  };
 
-    return () => {
-      active = false;
-    };
-  }, [value, inputValue, fetch]);
+  const shipmentTypes = [
+    {label: ''},
+    {label: 'Household Goods'},
+    {label: 'Healthcare/Pharmacy Products/Medicines'},
+    {label: 'Rice/wheat/grains'},
+    {label: 'Fresh fruits/vegetables'},
+    {label: 'FMCG/Packaged food products'},
+    {label: 'Chemicals Powder/Liquid Barrels'},
+    {label: 'Fertlizier'},
+    {label: 'Electronic goods/Home Appliances'},
+    {label: 'Paper /packaging/Printed Material'},
+    {label: 'Electrical Transformer/Panels/Equiments/Spare Parts'},
+    {label: 'Solar/Battery/Inverter Products'},
+    {label: 'Ceramic/Hardware supplies'},
+    {label: 'Electrical Wires/Cables'},
+    {label: 'Books/Stationery/Toys/GIFTS'},
+    {label: 'Aluminium /Steel/Metal products'},
+    {label: 'Building/Construction Material'},
+    {label: 'Paint/Houseware supplies'},
+    {label: 'Engineering goods'},
+    {label: 'Textile /Garments'},
+    {label: 'Plastics/PVC/Rubber'},
+    {label: 'Machine /Auto patrts'},
+    {label: 'Exhibitions/Event supplies'},
+    {label: 'Furniture/plywood/laminate'},
+    {label: 'Part load service'},
+    {label: 'Parcel and courier service'},
+    {label: 'Car/Bike/Scooter Transport'},
+    {label: 'Scrap'},
+  ];
+
+  const vehicleTypes=[
+    {label: ''},
+    {label: 'LCV open body'},
+    {label: 'LCV closed body'},
+    {label: 'Open Body Tauras'},
+    {label: 'Trailer 40 feet'},
+    {label: 'Containerized truck'}
+  ]
+
+  
+  const handleDateChange = date => {
+    setValues({
+      ...values,
+      shipment_date: Moment(date).format().toString().substring(0,10)
+    });
+  };
+
+
+  const handleShipment = event => {
+    console.log(values);
+    let headers =new Headers();
+    headers.set('Content-Type','application/json');
+    headers.set('Authorization','Token f2d7ae84da458ef5e046e44c2193f76773d78489')
+    axios.post('https://oro-api-qa.herokuapp.com/shipment',{
+      start_location: values.start_location,
+      drop_location: values.drop_location,
+      shipment_type: values.shipment_type,
+      shipment_weight: values.shipment_weight,
+      shipment_date: values.shipment_date,
+      vehicle_required_type: values.vehicle_required_type,
+      wheelsNo: values.wheelsNo,
+      companyName: values.companyName
+    },
+      {headers:{
+        'Authorization': 'Token f2d7ae84da458ef5e046e44c2193f76773d78489'
+      },
+      })
+      .then((response) => console.log(response))
+      .catch((err) => {
+        console.log(values);
+        console.log(headers);
+        console.log(err, err.response);
+        if (err.response.status >= 400) {
+          alert('Account already exists');
+        }
+      });
+    event.preventDefault();
+  };
 
   return (
-    <form className={classes.root}>
-    <Typography variant="h3"  gutterBottom>
-    Add Load
-  </Typography>
-  <blockquote className={classes.blockquote}>
-  ⚠️ Add your Items or Load which you want to get transported.
-         Please make sure to put correct information so that it will
-          be easy for vehicle owner to search for your load.
-</blockquote>
-         <div>
-    <Autocomplete
-      id="google-map-demo"
-      style={{ width: 70}}
-      getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
-      filterOptions={(x) => x}
-      options={options}
-      autoComplete
-      includeInputInList
-      filterSelectedOptions
-      value={value}
-      onChange={(event, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-      }}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      renderInput={(params) => (
-        <TextField {...params} label="Start Location" variant="outlined" fullWidth />
-      )}
-      renderOption={(option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
-        const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length]),
-        );
-
-        return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <LocationOnIcon className={classes.icon} />
+    <div className={classes.root}>
+       <Grid
+        container
+        spacing={6}
+      >
+            <Grid
+          item
+          lg={10}
+          md={6}
+          xl={8}
+          xs={12}
+        >
+    <Card
+      {...rest}
+      className={clsx(classes.root, className)}
+    >
+      <form
+        autoComplete="off"
+        noValidate
+        onSubmit={handleShipment}
+      >
+        <CardHeader
+          subheader="Enter the Shipment details"
+          title="Add Shipment"
+        />
+        <Divider />
+        <CardContent>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Start Location"
+                margin="dense"
+                name="start_location"
+                onChange={handleChange}
+                required
+                value={values.start_location}
+                variant="outlined"
+              />
             </Grid>
-            <Grid item xs>
-              {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 70 : 40 }}>
-                  {part.text}
-                </span>
-              ))}
-
-              <Typography variant="body2" color="textSecondary">
-                {option.structured_formatting.secondary_text}
-              </Typography>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Drop Location"
+                margin="dense"
+                name="drop_location"
+                onChange={handleChange}
+                required
+                value={values.drop_location}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                helperText="Shipment Weight in Tonnes"
+                label="Shipment Weight"
+                margin="dense"
+                name="shipment_weight"
+                onChange={handleChange}
+                required
+                value={values.shipment_weight}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  ampm={false}
+                  disablePast
+                  format="yyyy-MM-dd"
+                  label="Shipment Date"
+                  onChange={handleDateChange}
+                  onError={console.log}
+                  name="shipment_date"
+                  value={values.shipment_date}
+                  variant="inline"
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Shipment Type"
+                margin="dense"
+                name="shipment_type"
+                onChange={handleChange}
+                required
+                select
+                // eslint-disable-next-line react/jsx-sort-props
+                SelectProps={{ native: true }}
+                value={values.shipment_type}
+                variant="outlined"
+              >
+                {shipmentTypes.map(option => (
+                  <option
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Vehicle Type"
+                margin="dense"
+                name="vehicle_required_type"
+                onChange={handleChange}
+                required
+                select
+                // eslint-disable-next-line react/jsx-sort-props
+                SelectProps={{ native: true }}
+                value={values.vehicle_required_type}
+                variant="outlined"
+              >
+                {vehicleTypes.map(option => (
+                  <option
+                    key={option.label}
+                    value={option.label}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Wheel Number"
+                margin="dense"
+                name="wheelsNo"
+                onChange={handleChange}
+                required
+                value={values.wheelsNo}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Bid Price"
+                margin="dense"
+                name="bidPrice"
+                onChange={handleChange}
+                required
+                value={values.bidPrice}
+                variant="outlined"
+              />
             </Grid>
           </Grid>
-        );
-      }}
-    />
+          
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button
+            color="primary"
+            type="submit"
+            variant="contained"
+          >
+            Save details
+          </Button>
+        </CardActions>
+      </form>
+    </Card>
+    </Grid>
+    </Grid>
     </div>
-    </form>
   );
-}
+};
+
+LoadForm.propTypes = {
+  className: PropTypes.string
+};
+
+export default LoadForm;
