@@ -7,3 +7,4 @@ export { OtpVerifyRouter } from './otp/OtpVerify';
 export { default as InteractiveList } from './search';
 export {default as AddLoad} from './AddLoad';
 export { default as Account } from './Account';
+export {default as Vehicle} from './Vehicle';

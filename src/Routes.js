@@ -12,7 +12,8 @@ import {
   AddLoad as AddLoadView,
   InteractiveList as searchView,
   Account as AccountView,
-  OtpVerifyRouter as OtpVerifyView
+  OtpVerifyRouter as OtpVerifyView,
+  Vehicle as AddVehicleView
 } from './views';
 
 const Routes = () => {
@@ -58,6 +59,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/load/add"
+      />
+       <PrivateRouteWithLayout
+        component={AddVehicleView}
+        exact
+        layout={MainLayout}
+        path="/vehicle/add"
       />
       <RouteWithLayout
         component={searchView}

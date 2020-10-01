@@ -47,7 +47,7 @@ const Sidebar = props => {
     },
     {
       title: 'Add Vehicle',
-      href: '/products',
+      href: '/vehicle/add',
       icon: <LocalShippingIcon />
     },
     {
