@@ -191,6 +191,7 @@ const SignIn = props => {
       if(data.success === true){
         console.log(data);
         localStorage.setItem('isAuthenticated',true);
+        localStorage.setItem('token',data.token);
         history.push('/dashboard');
         console.log("how");
       }

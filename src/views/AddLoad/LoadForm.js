@@ -15,8 +15,8 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import axios from 'axios';
 import Moment from 'moment';
+import api from  '../../utils/AxiosUtil';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -101,7 +101,7 @@ const LoadForm = props => {
     let headers =new Headers();
     headers.set('Content-Type','application/json');
     headers.set('Authorization','Token f2d7ae84da458ef5e046e44c2193f76773d78489')
-    axios.post('https://oro-api-qa.herokuapp.com/shipment',{
+    api.post('/shipment',{
       start_location: values.start_location,
       drop_location: values.drop_location,
       shipment_type: values.shipment_type,
@@ -110,11 +110,7 @@ const LoadForm = props => {
       vehicle_required_type: values.vehicle_required_type,
       wheelsNo: values.wheelsNo,
       companyName: values.companyName
-    },
-      {headers:{
-        'Authorization': 'Token f2d7ae84da458ef5e046e44c2193f76773d78489'
-      },
-      })
+    })
       .then((response) => console.log(response))
       .catch((err) => {
         console.log(values);
