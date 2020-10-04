@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import clsx from 'clsx';
 import 'date-fns';
 import PropTypes from 'prop-types';
@@ -17,6 +17,8 @@ import {
 } from '@material-ui/core';
 import Moment from 'moment';
 import api from  '../../utils/AxiosUtil';
+import CustomSnackbar from '../../utils/CustomSnackBar';
+import {SnackbarContext} from '../../utils/SnackBarContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +28,14 @@ const useStyles = makeStyles(theme => ({
 
 const LoadForm = props => {
   const { className, ...rest } = props;
+  const {
+    open,
+    severity,
+    message, 
+    setOpen,
+    setSeverity,
+    setMessage, 
+  } = useContext(SnackbarContext)
 
   const classes = useStyles();
 
@@ -37,8 +47,18 @@ const LoadForm = props => {
     shipment_date: Moment().format(),
     vehicle_required_type: '',
     wheelsNo: '0',
-    companyName: ''
+    companyName: '',
+    isError: false,
+    open: false,
+    errMessage: '',
+    date: new Date()
   });
+
+  const[status, setStatusBase]= useState('');
+
+  const setStatus = msg => {
+    setStatusBase({ msg, date: new Date() });
+  };
 
   const handleChange = event => {
     setValues({
@@ -97,6 +117,7 @@ const LoadForm = props => {
 
 
   const handleShipment = event => {
+    event.preventDefault();
     console.log(values);
     let headers =new Headers();
     headers.set('Content-Type','application/json');
@@ -111,16 +132,19 @@ const LoadForm = props => {
       wheelsNo: values.wheelsNo,
       companyName: values.companyName
     })
-      .then((response) => console.log(response))
-      .catch((err) => {
-        console.log(values);
-        console.log(headers);
-        console.log(err, err.response);
-        if (err.response.status >= 400) {
-          alert('Account already exists');
-        }
+      .then((response) => {
+        console.log(response)
+        setMessage("Shipment Added")
+        setOpen(true)
+        setSeverity("success")
+      })
+     .catch((err) => {
+        console.log(err.toString());
+        setMessage(err.toString())
+        setOpen(true)
+        setSeverity("error")
       });
-    event.preventDefault();
+    
   };
 
   return (
@@ -320,10 +344,10 @@ const LoadForm = props => {
             color="primary"
             type="submit"
             variant="contained"
-          >
-            Save details
+          >Save details
           </Button>
         </CardActions>
+        <CustomSnackbar />
       </form>
     </Card>
     </Grid>

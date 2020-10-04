@@ -18,4 +18,12 @@ api.interceptors.request.use(req => {
     return res;
   });
 
+  api.interceptors.response.use(undefined,error=>{
+    const{status} =error.response;
+
+    if(status === 400){
+         throw Error('Server Error- Validation not proper');
+    }
+  })
+
   export default api;
