@@ -7,8 +7,9 @@ function SignInPage() {
     <div>
       <div className="signInPageContainer">
         <div className="Box">
-          
+          <SignInForm></SignInForm>
         </div>
+        
         <div className="leftBox Box">
           <img className="signInLogo" src={logo} style={{ height: "4rem" }} />
           <svg data-name="Layer 1" viewBox="80 50 400 800" className="test">
@@ -38,9 +39,9 @@ function SignInPage() {
           <p className="signInheading3">
             Mauris porttitor ex sit amet nulla vulputate dapibus
           </p>
-          <div id="circle1"></div>
-          <div id="circle2"></div>
-          <div id="circle3"></div>
+          <div id="circle1SignIn"></div>
+          <div id="circle2SignIn"></div>
+          <div id="circle3SignIn"></div>
         </div>
       </div>
     </div>

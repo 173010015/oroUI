@@ -50,15 +50,18 @@ function SignUpForm() {
         date_of_birth: data.date,
         email: data.email,
       })
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+        if (response.status == 200) alert("Sign up successful");
+      })
       .catch((err) => {
         console.log(data);
         console.log(err, err.response);
         if (err.response.status >= 400) {
-          alert("Account already exists");
+          alert("Error while signing up");
         }
       });
-    console.log(data.firstName);
+    
     //Carry on as normal
   };
 
