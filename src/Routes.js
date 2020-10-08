@@ -13,17 +13,25 @@ import {
   InteractiveList as searchView,
   Account as AccountView,
   OtpVerifyRouter as OtpVerifyView,
-  Vehicle as AddVehicleView
+  Vehicle as AddVehicleView,
+  Logout as LogoutView
 } from './views';
 
 const Routes = () => {
   return (
     <Switch>
-      <Redirect
+      {localStorage.getItem('isAuthenticated') ?
+        <Redirect
+        exact
+        from="/"
+        to="/dashboard"
+      />:
+        <Redirect
         exact
         from="/"
         to="/sign-in"
       />
+    }
       <RouteWithLayout
         component={SignInView}
         exact
@@ -41,6 +49,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/sign-up"
+      />
+      <RouteWithLayout
+        component={LogoutView}
+        exact
+        layout={MinimalLayout}
+        path="/logout"
       />
        <RouteWithLayout
         component={OtpVerifyView}

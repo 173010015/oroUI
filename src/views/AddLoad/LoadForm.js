@@ -19,6 +19,7 @@ import Moment from 'moment';
 import api from  '../../utils/AxiosUtil';
 import CustomSnackbar from '../../utils/CustomSnackBar';
 import {SnackbarContext} from '../../utils/SnackBarContext';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -119,9 +120,6 @@ const LoadForm = props => {
   const handleShipment = event => {
     event.preventDefault();
     console.log(values);
-    let headers =new Headers();
-    headers.set('Content-Type','application/json');
-    headers.set('Authorization','Token f2d7ae84da458ef5e046e44c2193f76773d78489')
     api.post('/shipment',{
       start_location: values.start_location,
       drop_location: values.drop_location,
@@ -226,6 +224,9 @@ const LoadForm = props => {
                 required
                 value={values.shipment_weight}
                 variant="outlined"
+                InputProps={{
+                endAdornment: <InputAdornment position="end">tonne</InputAdornment>,
+              }}
               />
             </Grid>
             <Grid
@@ -333,6 +334,9 @@ const LoadForm = props => {
                 required
                 value={values.bidPrice}
                 variant="outlined"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">₹</InputAdornment>,
+                }}
               />
             </Grid>
           </Grid>
